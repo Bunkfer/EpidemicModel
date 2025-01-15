@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from app_models import Main_model
 
-class sis(Main_model):
+class sisM(Main_model):
     def __init__(self, alpha = 0.0001, beta = 0.4, S0 = 8500, I0 = 1500, t_sim = 200):
         # Parámetros
         self.alpha = alpha  # Tasa de transmisión

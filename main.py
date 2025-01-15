@@ -1,5 +1,7 @@
+import time
+import sys
 import pandas as pd
-from app_sis import sis
+from app_sis import sisM
 
 def display_menu():
     while True:
@@ -17,7 +19,7 @@ def display_menu():
             # Permitir salir si el usuario escribe 'Exit'
             if user_input.lower() == "exit":
                 print("Goodbye!")
-                return None  # O algún valor especial que indique la salida
+                return None  # Indica que el usuario quiere salir
             
             # Intentar convertir la entrada a un número
             menu = int(user_input)
@@ -31,34 +33,46 @@ def display_menu():
             # Capturar errores si el usuario no introduce un número válido
             print("Invalid input. Please enter a number or type 'Exit' to quit.")
 
+
+def tiempo_espera(mensaje="Cargando"):
+    print(mensaje, end="", flush=True)
+    for _ in range(3):
+        time.sleep(0.5)
+        print(".", end="", flush=True)
+    print()
+
+
 def display_sis():
     while True:
         try:
-            print("Model sis can:")
+            print("Model SIS can:")
             print(" 1. Graph model")
             print(" 2. Create numeric solution")
             print(" 3. Compare numeric solution vs simulation")
             print()
-            print("Enter your selection number (or type Retrun to return menu):")
+            print("Enter your selection number (or type Return to return to the main menu):")
             
             # Leer la entrada como texto
             user_input = input("Your selection: ").strip()
             
-            # Permitir regresar al menu
+            # Permitir regresar al menú principal
             if user_input.lower() == "return":
-                break
+                return  # Termina esta función y regresa al menú principal
             
             # Intentar convertir la entrada a un número
             menu = int(user_input)
             
             # Verificar si el número está en el rango permitido
             if 1 <= menu <= 3:
-                sismodel = sis()
+                sismodel = sisM()
                 if menu == 1:
-                    sismodel.show_model()
-                if menu == 2:
+                    tiempo_espera("Creando gráfica")
+                    sismodel.show_model()  # Mostrar la gráfica después del efecto
+                elif menu == 2:
+                    tiempo_espera("Creando archivo")
                     sismodel.model_topdf()
-                if menu == 3:
+                elif menu == 3:
+                    tiempo_espera()
                     try:
                         # Intentar cargar los archivos
                         ode_data = pd.read_excel("SIS_ODEs.xlsx")
@@ -73,6 +87,8 @@ def display_sis():
                                             f"Columnas encontradas: {actual_columns}")
 
                         # Llamar al método que compara los datos
+                        print("Archivos Cargados")
+                        tiempo_espera("Creando Comparacion")
                         sismodel.modelvsSim(ode_data, simulation_data)
 
                     except FileNotFoundError as e:
@@ -91,14 +107,24 @@ def display_sis():
                 print("Invalid selection. Please select a number between 1 and 3.")
         except ValueError:
             # Capturar errores si el usuario no introduce un número válido
-            print("Invalid input. Please enter a number or or type 'Retrun' to return menu.")
+            print("Invalid input. Please enter a number or type 'Return' to return to the main menu.")
 
-# Llamar a la función y capturar la opción seleccionada
-selected_option = display_menu()
+# Bucle principal del programa
+if __name__ == "__main__":
+    while True:
+        # Mostrar el menú principal
+        selected_option = display_menu()
 
-if selected_option == 1:
-    display_sis()
-    display_menu()
-elif selected_option == 2 or selected_option == 3:
-    print("Under Construction")
+        # Salir si el usuario selecciona "Exit"
+        if selected_option is None:
+            break
 
+        # Procesar la selección del usuario
+        if selected_option == 1:
+            print()
+            display_sis()
+            print()
+        elif selected_option in [2, 3]:
+            print()
+            print("Under Construction")
+            print()
