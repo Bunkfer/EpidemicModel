@@ -1,4 +1,6 @@
 from app_menu import *
+from app_sis import sisM
+from app_sir import sirM
 
 # Bucle principal del programa
 if __name__ == "__main__":
@@ -12,12 +14,16 @@ if __name__ == "__main__":
 
         # Procesar la selección del usuario
         if selected_option == 1:
-            print()
-            display_sis()
+            model="SIS"
+            file =f"{model}_ODEs.xlsx"
+            columns = {'S','I'}
+            display_model(sisM(), model, file, columns)
             print()
         if selected_option == 2:
-            print()
-            display_sir()
+            model="SIR"
+            file =f"{model}_ODEs.xlsx"
+            columns = {'S','I','R'}
+            display_model(sirM(), model, file, columns)
             print()
         elif selected_option in [3]:
             print()
