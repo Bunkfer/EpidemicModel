@@ -16,13 +16,13 @@ if __name__ == "__main__":
         if selected_option == 1:
             model="SIS"
             file =f"{model}_ODEs.xlsx"
-            columns = {'S','I'}
+            columns = {'S', 'I'}
             display_model(sisM(), model, file, columns)
             print()
         if selected_option == 2:
             model="SIR"
             file =f"{model}_ODEs.xlsx"
-            columns = {'S','I','R'}
+            columns = set(model) 
             display_model(sirM(), model, file, columns)
             print()
         elif selected_option in [3]:
