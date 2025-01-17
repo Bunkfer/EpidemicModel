@@ -29,7 +29,7 @@ class sirM(Main_model):
         dRdt = self.beta * I - self.gamma * R
         return [dSdt, dIdt, dRdt]
 
-    def model_topdf(self):
+    def model_toCsv(self):
         # Resolver el sistema de EDOs
         solution = solve_ivp(self.SIR_model, self.tspan, self.Y0, t_eval=self.t_eval)
 

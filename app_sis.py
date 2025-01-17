@@ -26,7 +26,7 @@ class sisM(Main_model):
         dIdt = self.alpha * S * I - self.beta * I
         return [dSdt, dIdt]
 
-    def model_topdf(self):
+    def model_toCsv(self):
         # Resolver el sistema de EDOs
         solution = solve_ivp(self.SIS_model, self.tspan, self.Y0, t_eval=self.t_eval)
 
