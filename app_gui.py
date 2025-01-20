@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from app_sir import sirM
 from app_sis import sisM
+from app_sir import sirM
+from app_seair import seairM
 import pandas as pd
 from functools import partial
 
@@ -27,6 +28,11 @@ class MainWindow(QMainWindow):
         container = QWidget()
         container.setLayout(main_layout)
         self.setCentralWidget(container)
+
+        #Crear modelos
+        self.selected_model_sis = sisM()
+        self.selected_model_sir = sirM()
+        self.selected_model_seair = seairM()
 
     def style(self):
         self.setStyleSheet("""
@@ -119,21 +125,30 @@ class MainWindow(QMainWindow):
             model = "SIS"
             self.ode_file = f"{model}_ODEs.xlsx"
             self.expected_columns = {'S', 'I'}
-            self.selected_model_instance = sisM()
+            self.selected_model_instance = self.selected_model_sis
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         elif selected_option == 2:
             model = "SIR"
             self.ode_file = f"{model}_ODEs.xlsx"
             self.expected_columns = set(model)
-            self.selected_model_instance = sirM()
+            self.selected_model_instance = self.selected_model_sir
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         elif selected_option == 3:
-            self.label1.setText(f"Under Construction")
+            model = "SEAIR"
+            self.ode_file = f"{model}_ODEs.xlsx"
+            self.expected_columns = set(model)
+            self.selected_model_instance = self.selected_model_seair
+            self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
+        self.model_in_construction = False
+        """elif selected_option == 4:
+            self.model_in_construction = True  # Modelo en construcción
+            self.selected_model_instance = None  # No asignar instancia de modelo
+            self.label1.setText(f"Estatus: Modelo en construcción.")"""
             
     def on_button_clicked(self, menu):
         # Verificar si un modelo fue seleccionado
-        if not hasattr(self, 'selected_model_instance'):
-            self.label1.setText("Error: Por favor selecciona un modelo primero.")
+        if not hasattr(self, 'selected_model_instance') or self.model_in_construction:
+            self.label1.setText("Error: Por favor selecciona un modelo válido primero.")
             return
 
         # Desconectar conexiones previas de la señal timer_finished
