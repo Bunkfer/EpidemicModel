@@ -16,8 +16,9 @@ class sisM(Main_model):
         self.Y0 = [S0, I0]
 
         # Tiempo de simulación (valores enteros de 0 a 200)
-        self.tspan = (0, t_sim)
-        self.t_eval = np.arange(0, t_sim+1, 1) 
+        self.t_sim = t_sim
+        self.tspan = (0, self.t_sim)
+        self.t_eval = np.arange(0, self.t_sim+1, 1) 
 
     # Solución numérica del modelo SIS
     def SIS_model(self, t, Y):

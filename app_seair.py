@@ -5,8 +5,8 @@ import pandas as pd
 from app_models import Main_model
 
 class seairM(Main_model):
-    def __init__(self, beta=0.00009, delta=0.001, gamma=0.32, mu_E=0.12, mu_I=0.1, mu_A=0.3, 
-                 p=0.6, S0=8000, E0=1000, A0=100, I0=400, R0=0, t_sim=200):
+    def __init__(self, beta=0.0004, delta=0.03, gamma=0.25, mu_E=0.12, mu_I=0.1, mu_A=0.2, 
+                 p=0.6, S0=8500, E0=1000, A0=100, I0=400, R0=0, t_sim=200):
         # Parámetros
         self.beta = beta     # Tasa de transmisión
 

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from app_gui_sis import NewWindowSIS
 from app_sis import sisM
 from app_sir import sirM
 from app_seair import seairM
@@ -39,9 +40,10 @@ class MainWindow(QMainWindow):
             QMainWindow {
                 background-color: #000000;
             }
-            QLabel, QCheckBox, QPushButton {
+            QLabel, QCheckBox, QPushButton{
                 color: #FFFFFF;
                 font-size: 14px;
+                padding: 5px;
             }
             QPushButton {
                 background-color: #444444;
@@ -94,21 +96,25 @@ class MainWindow(QMainWindow):
         self.button1 = QPushButton("Ver grafica")
         self.button2 = QPushButton("Crear solucion\nnumerica")
         self.button3 = QPushButton("Solucion numerica\nvs Simulación")
+        self.button4 = QPushButton("Modificar modelo\nnumerico")
 
         # Definir tamaño fijo para los botones
-        self.button1.setFixedSize(150, 40)  # Ancho: 150, Alto: 40
-        self.button2.setFixedSize(150, 40)
-        self.button3.setFixedSize(150, 40)
+        self.button1.setFixedSize(130, 40)  # Ancho: 130, Alto: 40
+        self.button2.setFixedSize(130, 40)
+        self.button3.setFixedSize(130, 40)
+        self.button4.setFixedSize(130, 40)
 
         # Conectar botones a métodos
         self.button1.clicked.connect(lambda: self.on_button_clicked(1))
         self.button2.clicked.connect(lambda: self.on_button_clicked(2))
         self.button3.clicked.connect(lambda: self.on_button_clicked(3))
+        self.button4.clicked.connect(lambda: self.on_button_clicked(4))
 
         # Agregar botones al layout horizontal
         button_layout.addWidget(self.button1)
         button_layout.addWidget(self.button2)
         button_layout.addWidget(self.button3)
+        button_layout.addWidget(self.button4)
 
         # Agregar el layout de botones al layout principal
         main_layout.addLayout(button_layout)
@@ -121,6 +127,7 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(label_layout)
 
     def on_checkbox_selected(self, selected_option):
+        self.model_selection_cb = selected_option
         if selected_option == 1:
             model = "SIS"
             self.ode_file = f"{model}_ODEs.xlsx"
@@ -164,6 +171,7 @@ class MainWindow(QMainWindow):
         if menu == 1:
             self.tiempo_espera(mensaje="Creando gráfica")
             self.timer_finished.connect(self.selected_model_instance.show_model)
+    
         elif menu == 2:
             self.tiempo_espera("Creando archivo")
             self.timer_finished.connect(self.selected_model_instance.model_toCsv)
@@ -193,8 +201,15 @@ class MainWindow(QMainWindow):
 
             except Exception as e:
                 self.timer_finished.connect(lambda e=e: self.label1.setText(f"Error inesperado: {str(e)}"))
+        
+        elif menu == 4:
+            if self.model_selection_cb == 1:
+                self.open_new_window(NewWindowSIS, self.update_model_sis)  # Llamar directamente a la función sin volver a conectar
+            else:
+                self.label1.setText("Error: En construcción")
+    
 
-    def tiempo_espera(self, mensaje="Cargando", puntos=4):
+    def tiempo_espera(self, mensaje="Cargando", puntos=3):
         self.label1.setText(f"Estatus: {mensaje}")  # Mensaje inicial
         self.current_dots = 0  # Contador para los puntos
         self.max_dots = puntos  # Máximo número de puntos
@@ -213,3 +228,18 @@ class MainWindow(QMainWindow):
         if self.current_dots >= self.max_dots:
             self.timer.stop()
             self.timer_finished.emit()
+
+    def open_new_window(self, NewWindow, update_model):
+        # Crear una nueva ventana
+        self.new_window = NewWindow(self)
+        self.new_window.model_modified.connect(update_model)
+        self.new_window.show()
+
+    def update_model_sis(self):
+        self.selected_model_sis = sisM(alpha = self.selected_model_sis.alpha, 
+                                       beta = self.selected_model_sis.beta,
+                                       S0 = self.selected_model_sis.S0, 
+                                       I0 = self.selected_model_sis.I0,
+                                       t_sim = self.selected_model_sis.t_sim
+                                       )
+        self.selected_model_instance = self.selected_model_sis
