@@ -27,8 +27,9 @@ class seairM(Main_model):
         self.Y0 = [S0, E0, A0, I0, R0]
 
         # Tiempo de simulación
-        self.tspan = (0, t_sim)
-        self.t_eval = np.arange(0, t_sim + 1, 1)
+        self.t_sim = t_sim
+        self.tspan = (0, self.t_sim)
+        self.t_eval = np.arange(0, self.t_sim + 1, 1)
 
     # Solución numérica del modelo SEAIR
     def SEAIR_model(self, t, Y):

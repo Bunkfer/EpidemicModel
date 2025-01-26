@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication
-from app_gui import MainWindow
+from app_main_logic import MainWindowLogic
 
 app = QApplication([])
-window = MainWindow()
+window = MainWindowLogic()
 window.show()
 app.exec()
