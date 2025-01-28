@@ -4,6 +4,7 @@ from app_main_model import MainWindowModel
 from app_gui_sis import NewWindowSIS
 from app_gui_sir import NewWindowSIR
 from app_gui_seair import NewWindowSEAIR
+from app_gui_vseiqr import NewWindowVSEIQR
 import pandas as pd
 from functools import partial
 
@@ -111,8 +112,11 @@ class MainWindowLogic(MainWindowUI, MainWindowModel):
                 self.open_new_window(NewWindowSIR, self.update_model_sir)
             elif self.model_selection_cb == 3:
                 self.open_new_window(NewWindowSEAIR, self.update_model_seair)
-            else:
-                self.label1.setText("Error: En construcción")
+            elif self.model_selection_cb == 4:
+                self.open_new_window(NewWindowVSEIQR, self.update_model_vseiqr)
+            
+            """else:
+                self.label1.setText("Error: En construcción")"""
     
 
     def tiempo_espera(self, mensaje="Cargando", puntos=3):

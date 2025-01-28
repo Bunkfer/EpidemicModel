@@ -32,7 +32,6 @@ class MainWindowModel():
         self.selected_model_instance = self.selected_model_sir
 
     def update_model_seair(self):
-        #alpha, beta, gamma, S0, I0, R0, t_sim
         self.selected_model_seair = seairM(beta = self.selected_model_seair.beta, 
                                            delta = self.selected_model_seair.delta,
                                            gamma = self.selected_model_seair.gamma,
@@ -48,3 +47,29 @@ class MainWindowModel():
                                            t_sim = self.selected_model_seair.t_sim
                                        )
         self.selected_model_instance = self.selected_model_seair
+    
+    def update_model_vseiqr(self):
+        self.selected_model_vseiqr = vseiqrM(sigma = self.selected_model_vseiqr.sigma,
+                                              alpha = self.selected_model_vseiqr.alpha,
+                                              tau=self.selected_model_vseiqr.tau,
+                                              omega=self.selected_model_vseiqr.omega,
+                                              zeta=self.selected_model_vseiqr.zeta,
+                                              epsilon=self.selected_model_vseiqr.epsilon,
+                                              delta=self.selected_model_vseiqr.delta,
+                                              eta=self.selected_model_vseiqr.eta,
+                                              kappa=self.selected_model_vseiqr.kappa,
+                                              rho=self.selected_model_vseiqr.rho,
+                                              theta=self.selected_model_vseiqr.theta,
+                                              iota=self.selected_model_vseiqr.iota,
+                                              nu=self.selected_model_vseiqr.nu,
+                                              S0=self.selected_model_vseiqr.S0,
+                                              V0=self.selected_model_vseiqr.V0,
+                                              E0=self.selected_model_vseiqr.E0,
+                                              I_A0=self.selected_model_vseiqr.I_A0,
+                                              Q0=self.selected_model_vseiqr.Q0,
+                                              I_S0=self.selected_model_vseiqr.I_S0,
+                                              R0=self.selected_model_vseiqr.R0,
+                                              M0=self.selected_model_vseiqr.M0,
+                                              t_sim=self.selected_model_vseiqr.t_sim
+                                              )
+        self.selected_model_instance = self.selected_model_vseiqr
