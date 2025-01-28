@@ -1,6 +1,7 @@
 from app_sis import sisM
 from app_sir import sirM
 from app_seair import seairM
+from app_vseiqr import vseiqrM
 
 class MainWindowModel():
     def __init__(self):
@@ -8,6 +9,7 @@ class MainWindowModel():
         self.selected_model_sis = sisM()
         self.selected_model_sir = sirM()
         self.selected_model_seair = seairM()
+        self.selected_model_vseiqr = vseiqrM()
 
     def update_model_sis(self):
         self.selected_model_sis = sisM(alpha = self.selected_model_sis.alpha, 

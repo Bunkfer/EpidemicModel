@@ -44,9 +44,15 @@ class MainWindowLogic(MainWindowUI, MainWindowModel):
             self.selected_model_instance = self.selected_model_seair
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         elif selected_option == 4:
+            model = "VSEIQR"
+            self.ode_file = f"{model}_ODEs.xlsx"
+            self.expected_columns = {'S','V','E','I_A','Q','I_S','R','M'}
+            self.selected_model_instance = self.selected_model_vseiqr
+            self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
+        """elif selected_option == 4:
             self.model_in_construction = True  # Modelo en construcción
             self.selected_model_instance = None  # No asignar instancia de modelo
-            self.label1.setText(f"Estatus: Modelo en construcción.")
+            self.label1.setText(f"Estatus: Modelo en construcción.")"""
             
     def on_button_clicked(self, menu):
         # Verificar si un modelo fue seleccionado
