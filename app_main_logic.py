@@ -47,7 +47,7 @@ class MainWindowLogic(MainWindowUI, MainWindowModel):
         elif selected_option == 4:
             model = "VSEIQR"
             self.ode_file = f"{model}_ODEs.xlsx"
-            self.expected_columns = {'S','V','E','I_A','Q','I_S','R','M'}
+            self.expected_columns = {'S','V','E','Ia','Q','Is','R','M'}
             self.selected_model_instance = self.selected_model_vseiqr
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         """elif selected_option == 4:

@@ -5,9 +5,9 @@ import pandas as pd
 from app_models import Main_model
 
 class vseiqrM(Main_model):
-    def __init__(self, sigma=0.001, alpha=0.02, tau=0.05, omega=0.02, zeta=0.05,
-                 epsilon=0.1, delta=0.05, eta=0.1, kappa=0.02, rho=0.05, theta=0.4,
-                 iota=0.3, nu=0.02, S0=8500, V0=0, E0=1500,
+    def __init__(self, sigma=0.12, alpha=0.0003, tau=0.02, omega=0.05, zeta=0.008,
+                 epsilon=0.004, delta=0.12, eta=0.05, kappa=0.001, rho=0.0001, theta=0.0005,
+                 iota=0.003, nu=0.001, S0=8500, V0=0, E0=1500,
                  I_A0=0, Q0=0, I_S0=0, R0=0, M0=0, t_sim=200):
         # Parámetros
         self.sigma = sigma          #Tasa de inmunidad adquirida
@@ -71,18 +71,18 @@ class vseiqrM(Main_model):
         t = solution.t.astype(int)
         data = pd.DataFrame({
             "Tiempo": t,
-            "S (Susceptibles)": S,
-            "V (Vacunados)": V,
-            "E (Expuestos)": E,
-            "I_A (Asintomáticos)": I_A,
-            "Q (Cuarentenados)": Q,
-            "I_S (Sintomáticos)": I_S,
-            "R (Recuperados)": R,
-            "M (Muertes)": M
+            "S": S,
+            "V": V,
+            "E": E,
+            "Ia": I_A,
+            "Q": Q,
+            "Is": I_S,
+            "R": R,
+            "M": M
         })
         data.to_excel("VSEIQR_ODEs.xlsx", index=False)
 
-    def show_model(self):
+    """def show_model(self):
         solution = solve_ivp(self.VSEIQR_model, self.tspan, self.Y0, t_eval=self.t_eval)
 
         # Extraer los resultados
@@ -110,9 +110,57 @@ class vseiqrM(Main_model):
         plt.title("Modelo Epidemiológico VSEIQR")
         plt.legend()
         plt.grid()
+        plt.show()"""
+    
+    def show_model(self):
+        solution = solve_ivp(self.VSEIQR_model, self.tspan, self.Y0, t_eval=self.t_eval)
+
+        # Extraer los resultados
+        t = solution.t.astype(int)
+        S = np.round(solution.y[0]).astype(int)
+        V = np.round(solution.y[1]).astype(int)
+        E = np.round(solution.y[2]).astype(int)
+        I_A = np.round(solution.y[3]).astype(int)
+        Q = np.round(solution.y[4]).astype(int)
+        I_S = np.round(solution.y[5]).astype(int)
+        R = np.round(solution.y[6]).astype(int)
+        M = np.round(solution.y[7]).astype(int)
+
+        # Crear figura con dos gráficos en columnas
+        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
+
+        # Colores diferentes para cada gráfico
+        colors1 = ['#1f77b4', '#2ca02c', '#ff7f0e']  # Azul, Verde, Naranja para S, V, R
+        colors2 = ['#d62728', '#9467bd', '#8c564b', '#56B4E9', '#7f7f7f']  # Rojo, Morado, Marrón, Celeste, Gris para E, I_A, Q, I_S, M
+
+        # Primera gráfica con S, V, R
+        axes[0].plot(t, S, label="S (Susceptibles)", color=colors1[0])
+        axes[0].plot(t, V, label="V (Vacunados)", color=colors1[1])
+        axes[0].plot(t, R, label="R (Recuperados)", color=colors1[2])
+        axes[0].set_xlabel("Tiempo (días)")
+        axes[0].set_ylabel("Población")
+        axes[0].set_title("Estados S, V y R")
+        axes[0].legend()
+        axes[0].grid()
+
+        # Segunda gráfica con E, I_A, Q, I_S, M
+        axes[1].plot(t, E, label="E (Expuestos)", color=colors2[0])
+        axes[1].plot(t, I_A, label="Ia (Asintomáticos)", color=colors2[1])
+        axes[1].plot(t, Q, label="Q (Cuarentena)", color=colors2[2])
+        axes[1].plot(t, I_S, label="Is (Sintomáticos)", color=colors2[3])
+        axes[1].plot(t, M, label="M (Muertes)", color=colors2[4])
+        axes[1].set_xlabel("Tiempo (días)")
+        axes[1].set_ylabel("Población")
+        axes[1].set_title("Estados E, Ia, Q, Is y M")
+        axes[1].legend()
+        axes[1].grid()
+
+        plt.tight_layout()
         plt.show()
 
-    def modelvsSim(self, ode_data, simulation_data):
+
+
+    """def modelvsSim(self, ode_data, simulation_data):
         # Limitar los datos a los primeros 200 puntos
         ode_data_200 = ode_data.head(200)
         simulation_data_200 = simulation_data.head(200)
@@ -190,6 +238,54 @@ class vseiqrM(Main_model):
         plt.tight_layout()
 
         # Mostrar la gráfica
-        plt.show()
+        plt.show()"""
+        
+    def modelvsSim(self, ode_data, simulation_data):
+        # Limitar los datos a los primeros 200 puntos
+        ode_data_200 = ode_data.head(200)
+        simulation_data_200 = simulation_data.head(200)
 
+        # Crear DataFrame de comparación
+        comp = pd.DataFrame({"Time": range(200)})
+        variables = ["S", "V", "E", "Ia", "Q", "Is", "R", "M"]
+
+        for var in variables:
+            comp[f"ODE_{var}"] = ode_data_200[var]
+            comp[f"Sim_{var}"] = simulation_data_200[var]
+
+        # Crear la figura con dos gráficos
+        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(14, 6))
+
+        # Definir colores para cada grupo de estados
+        colors1 = ['#1f77b4', '#2ca02c', '#ff7f0e']  # Azul, Verde, Naranja (S, V, R)
+        colors2 = ['#d62728', '#9467bd', '#8c564b', '#56B4E9', '#7f7f7f']  # Rojo, Morado, Marrón, Celeste, Gris (E, I_A, Q, I_S, M)
+
+        # Definir los grupos de estados
+        group1 = ["S", "V", "R"]
+        group2 = ["E", "Ia", "Q", "Is", "M"]
+
+        # Gráfico 1: S, V, R
+        for i, var in enumerate(group1):
+            axes[0].plot(comp["Time"], comp[f"ODE_{var}"], label=f"ODE {var}", linestyle="-", marker="o", markersize=3, color=colors1[i])
+            axes[0].plot(comp["Time"], comp[f"Sim_{var}"], label=f"Sim {var}", linestyle="--", marker="x", markersize=3, color=colors1[i])
+
+        axes[0].set_xlabel("Tiempo (días)")
+        axes[0].set_ylabel("Población")
+        axes[0].set_title("Comparación de S, V y R")
+        axes[0].legend()
+        axes[0].grid()
+
+        # Gráfico 2: E, I_A, Q, I_S, M
+        for i, var in enumerate(group2):
+            axes[1].plot(comp["Time"], comp[f"ODE_{var}"], label=f"ODE {var}", linestyle="-", marker="o", markersize=3, color=colors2[i])
+            axes[1].plot(comp["Time"], comp[f"Sim_{var}"], label=f"Sim {var}", linestyle="--", marker="x", markersize=3, color=colors2[i])
+
+        axes[1].set_xlabel("Tiempo (días)")
+        axes[1].set_ylabel("Población")
+        axes[1].set_title("Comparación de E, Ia, Q, Is y M")
+        axes[1].legend()
+        axes[1].grid()
+
+        plt.tight_layout()
+        plt.show()
 

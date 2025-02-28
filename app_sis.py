@@ -38,6 +38,7 @@ class sisM(Main_model):
 
         # Guardar los resultados en un archivo Excel
         data = pd.DataFrame({
+            "Tiempo": t,
             "S": S,
             "I": I
         })
