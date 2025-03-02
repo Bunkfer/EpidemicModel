@@ -1,3 +1,4 @@
+import pandas as pd
 from PyQt5.QtCore import *
 from app_main_ui import MainWindowUI
 from app_main_model import MainWindowModel
@@ -5,7 +6,8 @@ from app_gui_sis import NewWindowSIS
 from app_gui_sir import NewWindowSIR
 from app_gui_seair import NewWindowSEAIR
 from app_gui_vseiqr import NewWindowVSEIQR
-import pandas as pd
+from models_data import *
+from models_graph import *
 from functools import partial
 
 class MainWindowLogic(MainWindowUI, MainWindowModel):
@@ -31,29 +33,34 @@ class MainWindowLogic(MainWindowUI, MainWindowModel):
             self.ode_file = f"{model}_ODEs.xlsx"
             self.expected_columns = {'S', 'I'}
             self.selected_model_instance = self.selected_model_sis
+            self.selected_model_instance_visual = sisGraph(self.selected_model_instance)
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         elif selected_option == 2:
             model = "SIR"
             self.ode_file = f"{model}_ODEs.xlsx"
             self.expected_columns = set(model)
             self.selected_model_instance = self.selected_model_sir
+            self.selected_model_instance_visual = sirGraph(self.selected_model_instance)
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         elif selected_option == 3:
             model = "SEAIR"
             self.ode_file = f"{model}_ODEs.xlsx"
             self.expected_columns = set(model)
             self.selected_model_instance = self.selected_model_seair
+            self.selected_model_instance_visual = seairGraph(self.selected_model_instance)
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         elif selected_option == 4:
             model = "VSEIQR"
             self.ode_file = f"{model}_ODEs.xlsx"
             self.expected_columns = {'S','V','E','Ia','Q','Is','R','M'}
             self.selected_model_instance = self.selected_model_vseiqr
+            self.selected_model_instance_visual = vseiqrGraph(self.selected_model_instance)
             self.label1.setText(f"Estatus: Modelo {model} seleccionado.")
         """elif selected_option == 4:
             self.model_in_construction = True  # Modelo en construcción
             self.selected_model_instance = None  # No asignar instancia de modelo
             self.label1.setText(f"Estatus: Modelo en construcción.")"""
+        self.selected_model_instance_data = ModelData(self.selected_model_instance)
             
     def on_button_clicked(self, menu):
         # Verificar si un modelo fue seleccionado
@@ -73,17 +80,18 @@ class MainWindowLogic(MainWindowUI, MainWindowModel):
 
         if menu == 1:
             self.tiempo_espera(mensaje="Creando gráfica")
-            self.timer_finished.connect(self.selected_model_instance.show_model)
+            self.timer_finished.connect(self.selected_model_instance_visual.show_model)
     
         elif menu == 2:
             self.tiempo_espera("Creando archivo")
-            self.timer_finished.connect(self.selected_model_instance.model_toCsv)
+            #self.timer_finished.connect(self.selected_model_instance_data.save_to_csv(self.ode_file))
+            #self.selected_model_instance_data.save_to_csv(self.ode_file)
+            self.timer_finished.connect(lambda: self.selected_model_instance_data.save_to_csv(self.ode_file))
+
         elif menu == 3:
             try:
                 self.tiempo_espera("Cargando Archivos")
-                # Carga de archivos
-                ode_data = pd.read_excel(self.ode_file)
-                simulation_data = pd.read_csv(r"C:\OnedriveOut\Maestria\Tesis\Proyecto\estadisticas.csv")
+                simulation_data = self.selected_model_instance_data.load_from_csv()
 
                 # Validación de columnas
                 actual_columns = set(simulation_data.columns)
@@ -91,7 +99,7 @@ class MainWindowLogic(MainWindowUI, MainWindowModel):
                     raise ValueError(f"El archivo 'estadisticas.csv' debe contener únicamente las columnas {self.expected_columns}. "
                                     f"\nColumnas encontradas: {actual_columns}")
 
-                self.timer_finished.connect(lambda: self.selected_model_instance.modelvsSim(ode_data, simulation_data))
+                self.timer_finished.connect(lambda: self.selected_model_instance_visual.modelvsSim(self.ode_file))
 
             except FileNotFoundError as e:
                 self.timer_finished.connect(lambda e=e: self.label1.setText(f"Error: No se pudo encontrar el archivo {e.filename}"))
