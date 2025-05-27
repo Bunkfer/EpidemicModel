@@ -24,7 +24,6 @@ class sis(Main_model):
         return [dSdt, dIdt]
 
     def solve(self):
-        """Resuelve la ecuación diferencial automáticamente al instanciar la clase."""
         solution = solve_ivp(self.SIS_model, self.tspan, self.Y0, t_eval=self.t_eval)
         return {
             "Tiempo": solution.t.astype(int),
@@ -54,7 +53,6 @@ class sir(Main_model):
         # Resolver automáticamente al crear la instancia
         self.results = self.solve()
 
-    # Solución numérica del modelo SIR
     def SIR_model(self, t, Y):
         S, I, R = Y
         dSdt = -self.alpha * S * I + self.gamma * R
@@ -63,7 +61,6 @@ class sir(Main_model):
         return [dSdt, dIdt, dRdt]
     
     def solve(self):
-        """Resuelve la ecuación diferencial automáticamente al instanciar la clase."""
         solution = solve_ivp(self.SIR_model, self.tspan, self.Y0, t_eval=self.t_eval)
         return {
             "Tiempo": solution.t.astype(int),
@@ -105,15 +102,14 @@ class seair(Main_model):
     # Solución numérica del modelo SEAIR
     def SEAIR_model(self, t, Y):
         S, E, A, I, R = Y
-        dSdt = -self.beta * S * (self.delta * A + I) + self.gamma * R # --> Recuerda que agregaste (gamma*R)
+        dSdt = -self.beta * S * (self.delta * A + I) + self.gamma * R 
         dEdt = self.beta * S * (self.delta * A + I) - self.mu_E * E
         dAdt = (1 - self.p) * self.mu_E * E - self.mu_A * A
         dIdt = self.p * self.mu_E * E - self.mu_I * I
-        dRdt = self.mu_A * A + self.mu_I * I - self.gamma * R         # --> Recuerda que agregaste (gamma*R)
+        dRdt = self.mu_A * A + self.mu_I * I - self.gamma * R         
         return [dSdt, dEdt, dAdt, dIdt, dRdt]
     
     def solve(self):
-        """Resuelve la ecuación diferencial automáticamente al instanciar la clase."""
         solution = solve_ivp(self.SEAIR_model, self.tspan, self.Y0, t_eval=self.t_eval)
         return {
             "Tiempo": solution.t.astype(int),
@@ -125,10 +121,15 @@ class seair(Main_model):
         }
     
 class vseiqr(Main_model):
+    """def __init__(self, sigma=0.0668, alpha=0.01, tau=0.0002, omega=0.0032, zeta=0.02798,
+                 epsilon=0.0101, delta=1.6728e-5, eta=0.04478, kappa=0.0368, rho=0.004, theta=0.0101,
+                 iota=0.0045, nu=3.2084e-4, S0=8500, V0=0, E0=1500,
+                 I_A0=0, Q0=0, I_S0=0, R0=0, M0=0, t_sim=200):"""
     def __init__(self, sigma=0.12, alpha=0.0003, tau=0.02, omega=0.05, zeta=0.008,
                  epsilon=0.004, delta=0.12, eta=0.05, kappa=0.001, rho=0.0001, theta=0.0005,
                  iota=0.003, nu=0.001, S0=8500, V0=0, E0=1500,
                  I_A0=0, Q0=0, I_S0=0, R0=0, M0=0, t_sim=200):
+    
         # Parámetros
         self.sigma = sigma          #Tasa de inmunidad adquirida
         self.alpha = alpha          #Tasa de exposicion
@@ -177,7 +178,6 @@ class vseiqr(Main_model):
         return [dSdt, dVdt, dEdt, dI_Adt, dQdt, dI_Sdt, dRdt, dMdt]
     
     def solve(self):
-        """Resuelve la ecuación diferencial automáticamente al instanciar la clase."""
         solution = solve_ivp(self.VSEIQR_model, self.tspan, self.Y0, t_eval=self.t_eval)
         return {
             "Tiempo": solution.t.astype(int),

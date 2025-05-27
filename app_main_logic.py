@@ -84,8 +84,6 @@ class MainWindowLogic(MainWindowUI, MainWindowModel):
     
         elif menu == 2:
             self.tiempo_espera("Creando archivo")
-            #self.timer_finished.connect(self.selected_model_instance_data.save_to_csv(self.ode_file))
-            #self.selected_model_instance_data.save_to_csv(self.ode_file)
             self.timer_finished.connect(lambda: self.selected_model_instance_data.save_to_csv(self.ode_file))
 
         elif menu == 3:

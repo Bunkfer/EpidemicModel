@@ -1,0 +1,9 @@
+./__pycache__
+./.vscode
+dockerfile
+./venv
+prueba.py
+.gitignore
+Readme_Docker.txt
+create_image_docker.txt
+./modelos

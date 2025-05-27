@@ -6,3 +6,6 @@ SEAIR_ODEs.xlsx
 VSEIQR_ODEs.xlsx
 __pycache__/
 .vscode/
+venv/
+modelos/
+create_image_docker.txt
