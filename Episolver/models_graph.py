@@ -2,6 +2,29 @@ import matplotlib.pyplot as plt
 from models_data import *
 from models_super import *
 
+Ingles = False
+Tiempo = "Time" if Ingles else "Tiempo"
+Poblacion = "Populaton" if Ingles else "Población"
+S = "Susceptible (S)"
+I = "Infected (I)" if Ingles else "Infectado (I)"
+R = "Recovered (R)" if Ingles else "Recuperado (R)"
+E = "Exposed (E)" if Ingles else "Expuesto (E)"
+A = "Asymptomatic (A)" if Ingles else "Asintomático (A)"
+V = "Vaccinated (V)" if Ingles else "Vacunado (V)"
+Ia = "Infected Asymptomatic (Ia)" if Ingles else "Infectado Asintomático (Ia)"
+Q = "Quarantine (Q)" if Ingles else "Cuarentena (Q)"
+Is = "Infected Symptomatic (Is)" if Ingles else "Infectado Sintomático (Is)"
+D = "Deceased (D)" if Ingles else "Muerto (D)"
+dias = "(days)" if Ingles else "(días)"
+Resultado = "Results Comparison:" if Ingles else "Comparación de resultados:"
+
+def EpM(modelo):
+    return f"{modelo} Epidemic Model" if Ingles else f"Modelo Epidemiológico {modelo}"
+
+def pM(modelo):
+    return f"{modelo} Model" if Ingles else f"Modelo {modelo}"
+
+
 class sisGraph(Main_graph):
     def __init__(self, sis_instance,fontsize=14):
         self.t = sis_instance.results["Tiempo"]
@@ -11,11 +34,11 @@ class sisGraph(Main_graph):
 
     def show_model(self):
         plt.figure(figsize=(10, 6))
-        plt.plot(self.t, self.S, 'b', label='Susceptible (S)', linestyle="-", marker="o", markersize=3)
-        plt.plot(self.t, self.I, 'r', label='Infected (I)', linestyle="-", marker="o", markersize=3)
-        plt.title('SIS Epidemic Model',fontsize=self.fontsize+8)
-        plt.xlabel('Time',fontsize=self.fontsize+6)
-        plt.ylabel('Population',fontsize=self.fontsize+6)
+        plt.plot(self.t, self.S, 'b', label= f'{S}', linestyle="-", marker="o", markersize=3)
+        plt.plot(self.t, self.I, 'r', label= f'{I}', linestyle="-", marker="o", markersize=3)
+        plt.title(EpM("SIS"),fontsize=self.fontsize+8)
+        plt.xlabel(f'{Tiempo}',fontsize=self.fontsize+6)
+        plt.ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         plt.legend(fontsize=self.fontsize-2)
         plt.xticks(fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -47,17 +70,17 @@ class sisGraph(Main_graph):
         plt.figure(figsize=(10, 6))
 
         # Graficar susceptibles
-        plt.plot(comp["Time"], comp["ODE_S"], label="ODE Susceptible (S)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_S"], label="Sim Susceptible (S)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_S"], label= f'ODE {S}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_S"], label= f'Sim {S}', linestyle="--", marker="x", markersize=3)
 
         # Graficar infectados
-        plt.plot(comp["Time"], comp["ODE_I"], label="ODE Infected (I)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_I"], label="Sim Infected (I)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_I"], label= f'ODE {I}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_I"], label= f'Sim {I}', linestyle="--", marker="x", markersize=3)
 
         # Configurar el gráfico
-        plt.title("Results Comparison: SIS Model", fontsize=self.fontsize+8)
-        plt.xlabel("Time (days)",fontsize=self.fontsize+6)
-        plt.ylabel("Population",fontsize=self.fontsize+6)
+        plt.title(f"{Resultado} {pM("SIS")}", fontsize=self.fontsize+8)
+        plt.xlabel(f'{Tiempo} {dias}',fontsize=self.fontsize+6)
+        plt.ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         plt.legend(fontsize=self.fontsize-3)
         plt.xticks(fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -76,12 +99,12 @@ class sirGraph(Main_graph):
     def show_model(self):
         # Graficar los resultados
         plt.figure(figsize=(10, 6))
-        plt.plot(self.t, self.S, 'b', label='Susceptible (S)', linestyle="-", marker="o", markersize=3)
-        plt.plot(self.t, self.I, 'r', label='Infected (I)', linestyle="-", marker="o", markersize=3)
-        plt.plot(self.t, self.R, 'g', label='Recovered (R)', linestyle="-", marker="o", markersize=3)
-        plt.title('SIR Epidemic Model',fontsize=self.fontsize+8)
-        plt.xlabel('Time',fontsize=self.fontsize+6)
-        plt.ylabel('Population',fontsize=self.fontsize+6)
+        plt.plot(self.t, self.S, 'b', label= f'{S}', linestyle="-", marker="o", markersize=3)
+        plt.plot(self.t, self.I, 'r', label= f'{I}', linestyle="-", marker="o", markersize=3)
+        plt.plot(self.t, self.R, 'g', label= f'{R}', linestyle="-", marker="o", markersize=3)
+        plt.title(EpM("SIR"),fontsize=self.fontsize+8)
+        plt.xlabel(f'{Tiempo}',fontsize=self.fontsize+6)
+        plt.ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         plt.legend(fontsize=self.fontsize-2)
         plt.xticks(fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -116,21 +139,21 @@ class sirGraph(Main_graph):
         plt.figure(figsize=(10, 6))
 
         # Graficar susceptibles
-        plt.plot(comp["Time"], comp["ODE_S"], label="ODE Susceptible (S)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_S"], label="Sim Susceptible (S)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_S"], label= f'ODE {S}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_S"], label= f'Sim {S}', linestyle="--", marker="x", markersize=3)
 
         # Graficar infectados
-        plt.plot(comp["Time"], comp["ODE_I"], label="ODE Infected (I)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_I"], label="Sim Infected (I)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_I"], label= f'ODE {I}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_I"], label= f'Sim {I}', linestyle="--", marker="x", markersize=3)
 
         # Graficar recuperados
-        plt.plot(comp["Time"], comp["ODE_R"], label="ODE Recoverd (R)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_R"], label="Sim Recovered (R)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_R"], label= f'ODE {R}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_R"], label= f'Sim {R}', linestyle="--", marker="x", markersize=3)
 
         # Configurar el gráfico
-        plt.title("Results Comparison: SIR Model", fontsize=self.fontsize+8)
-        plt.xlabel("Time (days)",fontsize=self.fontsize+6)
-        plt.ylabel("Population",fontsize=self.fontsize+6)
+        plt.title(f"{Resultado} {pM("SIR")}", fontsize=self.fontsize+8)
+        plt.xlabel(f'{Tiempo} {dias}',fontsize=self.fontsize+6)
+        plt.ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         plt.legend(fontsize=self.fontsize-3)
         plt.xticks(fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -151,14 +174,14 @@ class seairGraph(Main_graph):
     def show_model(self):
         # Graficar los resultados
         plt.figure(figsize=(10, 6))
-        plt.plot(self.t, self.S, 'b', label='Susceptible (S)', linestyle="-", marker="o", markersize=3)
-        plt.plot(self.t, self.E, 'orange', label='Exposed (E)', linestyle="-", marker="o", markersize=3)
-        plt.plot(self.t, self.A, 'purple', label='Asymptomatic (A)', linestyle="-", marker="o", markersize=3)
-        plt.plot(self.t, self.I, 'r', label='Infected (I)', linestyle="-", marker="o", markersize=3)
-        plt.plot(self.t, self.R, 'g', label='Recovered (R)', linestyle="-", marker="o", markersize=3)
-        plt.title('SEAIR Epidemic Model',fontsize=self.fontsize+8)
-        plt.xlabel('Time',fontsize=self.fontsize+6)
-        plt.ylabel('Population',fontsize=self.fontsize+6)
+        plt.plot(self.t, self.S, 'b', label= f'{S}', linestyle="-", marker="o", markersize=3)
+        plt.plot(self.t, self.E, 'orange', label= f'{E}', linestyle="-", marker="o", markersize=3)
+        plt.plot(self.t, self.A, 'purple', label= f'{A}', linestyle="-", marker="o", markersize=3)
+        plt.plot(self.t, self.I, 'r', label= f'{I}', linestyle="-", marker="o", markersize=3)
+        plt.plot(self.t, self.R, 'g', label= f'{R}', linestyle="-", marker="o", markersize=3)
+        plt.title(EpM("SEAIR"),fontsize=self.fontsize+8)
+        plt.xlabel(f'{Tiempo}',fontsize=self.fontsize+6)
+        plt.ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         plt.legend(fontsize=self.fontsize-2)
         plt.xticks(fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -199,29 +222,29 @@ class seairGraph(Main_graph):
         plt.figure(figsize=(10, 6))
 
         # Graficar susceptibles
-        plt.plot(comp["Time"], comp["ODE_S"], label="ODE Susceptible (S)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_S"], label="Sim Susceptible (S)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_S"], label= f'ODE {S}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_S"], label= f'Sim {S}', linestyle="--", marker="x", markersize=3)
 
         # Graficar expuestos
-        plt.plot(comp["Time"], comp["ODE_E"], label="ODE Exposed (E)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_E"], label="Sim Exposed (E)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_E"], label= f'ODE {E}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_E"], label= f'Sim {E}', linestyle="--", marker="x", markersize=3)
 
         # Graficar asintomáticos
-        plt.plot(comp["Time"], comp["ODE_A"], label="ODE Asymptomatic (A)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_A"], label="Sim Asymptomatic (A)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_A"], label= f'ODE {A}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_A"], label= f'Sim {A}', linestyle="--", marker="x", markersize=3)
 
         # Graficar infectados
-        plt.plot(comp["Time"], comp["ODE_I"], label="ODE Infected (I)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_I"], label="Sim Infected (I)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_I"], label= f'ODE {I}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_I"], label= f'Sim {I}', linestyle="--", marker="x", markersize=3)
 
         # Graficar recuperados
-        plt.plot(comp["Time"], comp["ODE_R"], label="ODE Recovered (R)", linestyle="-", marker="o", markersize=3)
-        plt.plot(comp["Time"], comp["Sim_R"], label="Sim Recovered (R)", linestyle="--", marker="x", markersize=3)
+        plt.plot(comp["Time"], comp["ODE_R"], label= f'ODE {R}', linestyle="-", marker="o", markersize=3)
+        plt.plot(comp["Time"], comp["Sim_R"], label= f'Sim {R}', linestyle="--", marker="x", markersize=3)
 
         # Configurar el gráfico
-        plt.title("Results Comparison: SEAIR Model", fontsize=self.fontsize+8)
-        plt.xlabel("Time (days)",fontsize=self.fontsize+6)
-        plt.ylabel("Population",fontsize=self.fontsize+6)
+        plt.title(f"{Resultado} {pM("SEAIR")}", fontsize=self.fontsize+8)
+        plt.xlabel(f'{Tiempo} {dias}',fontsize=self.fontsize+6)
+        plt.ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         plt.legend(fontsize=self.fontsize-4)
         plt.xticks(fontsize=self.fontsize)
         plt.yticks(fontsize=self.fontsize)
@@ -251,26 +274,26 @@ class vseiqrGraph(Main_graph):
         colors2 = ['#d62728', '#9467bd', '#8c564b', '#56B4E9', '#7f7f7f']  # Rojo, Morado, Marrón, Celeste, Gris para E, I_A, Q, I_S, M
 
         # Primera gráfica con S, V, R
-        axes[0].plot(self.t, self.S, label="Susceptible (S)", color=colors1[0])
-        axes[0].plot(self.t,self.V, label="Vaccinated  (V)", color=colors1[1])
-        axes[0].plot(self.t, self.R, label="Recovered (R)", color=colors1[2])
-        axes[0].set_title('VSEIQR Epidemic Model (S-V-R)',fontsize=self.fontsize+8)
-        axes[0].set_xlabel('Time',fontsize=self.fontsize+6)
-        axes[0].set_ylabel('Population',fontsize=self.fontsize+6)
+        axes[0].plot(self.t, self.S, label= f'{S}', color=colors1[0])
+        axes[0].plot(self.t,self.V, label= f'{V}', color=colors1[1])
+        axes[0].plot(self.t, self.R, label= f'{R}', color=colors1[2])
+        axes[0].set_title(f'{EpM("VSEIQR")} (S-V-R)',fontsize=self.fontsize+8)
+        axes[0].set_xlabel(f'{Tiempo}',fontsize=self.fontsize+6)
+        axes[0].set_ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         axes[0].legend(fontsize=self.fontsize-2)
         axes[0].grid()
 
         #axes[0].set_axis_off()
 
         # Segunda gráfica con E, I_A, Q, I_S, M
-        axes[1].plot(self.t, self.E, label="Exposed (E)", color=colors2[0])
-        axes[1].plot(self.t, self.I_A, label="Infected Asymptomatic (Ia)", color=colors2[1])
-        axes[1].plot(self.t, self.Q, label="Quarantine (Q)", color=colors2[2])
-        axes[1].plot(self.t, self.I_S, label="Infected Symptomatic (Is)", color=colors2[3])
-        axes[1].plot(self.t, self.M, label="Deceased (D)", color=colors2[4])
-        axes[1].set_title('VSEIQR Epidemic Model (E-Ia-Q-Is-D)',fontsize=self.fontsize+8)
-        axes[1].set_xlabel('Time',fontsize=self.fontsize+6)
-        axes[1].set_ylabel('Population',fontsize=self.fontsize+6)
+        axes[1].plot(self.t, self.E, label= f'{E}', color=colors2[0])
+        axes[1].plot(self.t, self.I_A, label= f'{Ia}', color=colors2[1])
+        axes[1].plot(self.t, self.Q, label= f'{Q}', color=colors2[2])
+        axes[1].plot(self.t, self.I_S, label= f'{Is}', color=colors2[3])
+        axes[1].plot(self.t, self.M, label= f'{D}', color=colors2[4])
+        axes[1].set_title(f'{EpM("VSEIQR")} (E-Ia-Q-Is-D)',fontsize=self.fontsize+8)
+        axes[1].set_xlabel(f'{Tiempo}',fontsize=self.fontsize+6)
+        axes[1].set_ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         axes[1].legend(fontsize=self.fontsize-2)
         axes[1].grid()
 
@@ -310,9 +333,9 @@ class vseiqrGraph(Main_graph):
             axes[0].plot(comp["Time"], comp[f"ODE_{var}"], label=f"ODE {var}", linestyle="-", marker="o", markersize=3, color=colors1[i])
             axes[0].plot(comp["Time"], comp[f"Sim_{var}"], label=f"Sim {var}", linestyle="--", marker="x", markersize=3, color=colors1[i])
 
-        axes[0].set_title("Results Comparison: VSEIQR Model (S-V-R)", fontsize=self.fontsize+8)
-        axes[0].set_xlabel("Time (days)",fontsize=self.fontsize+6)
-        axes[0].set_ylabel("Population",fontsize=self.fontsize+6)
+        axes[0].set_title(f"{Resultado} {pM("VSEIQR")} (S-V-R)", fontsize=self.fontsize+6)
+        axes[0].set_xlabel(f'{Tiempo} {dias}',fontsize=self.fontsize+6)
+        axes[0].set_ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         axes[0].legend(fontsize=self.fontsize)
         axes[0].grid()
 
@@ -323,9 +346,9 @@ class vseiqrGraph(Main_graph):
             axes[1].plot(comp["Time"], comp[f"ODE_{var}"], label=f"ODE {"D" if var=="M" else var}", linestyle="-", marker="o", markersize=3, color=colors2[i])
             axes[1].plot(comp["Time"], comp[f"Sim_{var}"], label=f"Sim {"D" if var=="M" else var}", linestyle="--", marker="x", markersize=3, color=colors2[i])
 
-        axes[1].set_title("Results Comparison: VSEIQR Model (E-Ia-Q-Is-D)", fontsize=self.fontsize+8)
-        axes[1].set_xlabel("Time (days)",fontsize=self.fontsize+6)
-        axes[1].set_ylabel("Population",fontsize=self.fontsize+6)
+        axes[1].set_title(f"{Resultado} {pM("VSEIQR")} (E-Ia-Q-Is-D)", fontsize=self.fontsize+6)
+        axes[1].set_xlabel(f'{Tiempo} {dias}',fontsize=self.fontsize+6)
+        axes[1].set_ylabel(f'{Poblacion}',fontsize=self.fontsize+6)
         axes[1].legend(fontsize=self.fontsize)
         axes[1].grid()
 

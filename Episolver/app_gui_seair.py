@@ -83,7 +83,7 @@ class NewWindowSEAIR(QWidget):
 
         # Imagen
         image_label = QLabel(self)
-        pixmap = QPixmap("./Imagenes/SEAIR.png")  # Reemplaza con la ruta de tu imagen
+        pixmap = QPixmap("./img/SEAIR.png")  # Reemplaza con la ruta de tu imagen
         image_label.setPixmap(pixmap)
         image_label.setScaledContents(True)  # Ajusta la imagen al tamaño del QLabel
         image_label.setGeometry(150, 205, 300, 260)
