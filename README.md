@@ -9,18 +9,21 @@ This project contains two complementary applications for modeling and analyzing 
 
 ## 🧪 Project Structure
 
+```
 EpidemicModel/
 ├── Episim/                     # Agent-based and Markov chain simulator
-│   ├── src/
+│   ├── img/
 │   └── Sim03.sln               # Visual Studio solution file for Episim
 │
 ├── Episolver/                  # ODE-based solver and comparison tool
-│   ├── Modelos/
-│   │   └── Sim_Result.csv      # Simulation results
-│   │   └── ODE_Result.csv      # Diferencial equation results
-│   └── main.py                 # Script to solve and compare models
+│   ├── img/
+│   ├── models/
+│   │   ├── Sim_Result.csv      # Simulation results
+│   │   └── ODE_Result.csv      # Differential equation results
+│   └── main.py                 # Python script to solve and compare models
 │
-└── README.md 
+└── README.md                   # Project documentation
+```
 
 ---
 
