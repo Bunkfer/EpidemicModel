@@ -53,3 +53,10 @@ It also performs graphical comparison between:
 - The simulation results (`Episim`)
 
 <img src="img/Episolver.png" alt="Episolver" width="60%">
+
+---
+
+## 📚 **References**
+
+- [Simulación de modelos epidemiológicos con agentes](http://bdigital.dgse.uaa.mx:8080/xmlui/handle/11317/3288)
+---
